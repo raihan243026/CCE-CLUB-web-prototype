@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCE Club Website</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#1a1a1a',
+                        'dark-surface': '#262626',
+                        'dark-accent': '#e0e0e0',
+                        'dark-text': '#f5f5f5',
+                        'red-bg': '#1a1a1a',
+                        'red-surface': '#333333',
+                        'red-accent': '#b91c1c',
+                        'red-text': '#f5f5f5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .dark-theme {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        .dark-theme .bg-surface {
+            background-color: var(--dark-surface);
+        }
+        .dark-theme .text-accent {
+            color: var(--dark-accent);
+        }
+        .dark-theme .border-accent {
+            border-color: var(--dark-accent);
+        }
+        .dark-theme .hover-accent:hover {
+            color: var(--dark-accent);
+        }
+        .dark-theme .hover-bg-surface:hover {
+            background-color: #333;
+        }
+
+        .red-theme {
+            background-color: var(--red-bg);
+            color: var(--red-text);
+        }
+        .red-theme .bg-surface {
+            background-color: var(--red-surface);
+        }
+        .red-theme .text-accent {
+            color: var(--red-accent);
+        }
+        .red-theme .border-accent {
+            border-color: var(--red-accent);
+        }
+        .red-theme .hover-accent:hover {
+            color: var(--red-accent);
+        }
+        .red-theme .hover-bg-surface:hover {
+            background-color: #444;
+        }
+
+        :root {
+            --dark-bg: #1a1a1a;
+            --dark-surface: #262626;
+            --dark-accent: #e0e0e0;
+            --dark-text: #f5f5f5;
+            --red-bg: #1a1a1a;
+            --red-surface: #333333;
+            --red-accent: #b91c1c;
+            --red-text: #f5f5f5;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-surface);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--red-accent);
+            border-radius: 4px;
+        }
+
+        /* Mobile Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 50;
+        }
+        .hamburger-menu span {
+            height: 3px;
+            width: 25px;
+            background: var(--dark-text);
+            margin-bottom: 4px;
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+        .mobile-nav {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 40;
+        }
+        .mobile-nav.open {
+            transform: translateX(0);
+        }
+        @media (max-width: 1023px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            .desktop-nav {
+                display: none;
+            }
+        }
+        
+    </style>
+</head>
+<body class="bg-dark-bg text-dark-text transition-colors duration-500">
+
+    <!-- Main application container -->
+    <div id="app" class="relative min-h-screen flex flex-col">
+
+        <!-- Header and Navigation -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-dark-bg shadow-lg">
+            <nav class="flex items-center justify-between p-4 md:p-6 lg:p-8">
+                <a href="#home" class="text-2xl font-bold text-accent hover:text-red-accent transition-colors duration-300">CCE Club</a>
+                <div class="flex items-center space-x-4">
+                    <!-- Search Bar -->
+                    <div class="relative hidden lg:block">
+                        <input type="text" id="searchInput" placeholder="Search..." class="bg-surface text-accent rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-red-accent transition-colors duration-300">
+                        <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+
+                    <!-- Desktop Navigation -->
+                    <div class="desktop-nav hidden lg:flex items-center space-x-6">
+                        <a href="#home" class="text-lg hover-accent transition-colors duration-300">Home</a>
+                        <a href="#clubs" class="text-lg hover-accent transition-colors duration-300">Clubs</a>
+                        <a href="#directory" class="text-lg hover-accent transition-colors duration-300">Directory</a>
+                        <a href="#resources" class="text-lg hover-accent transition-colors duration-300">Resources</a>
+                        <a href="#join" class="text-lg hover-accent transition-colors duration-300">Join Us</a>
+                        <a href="#dashboard" class="text-lg hover-accent transition-colors duration-300">Moderator</a>
+                    </div>
+                    
+                    <!-- Theme Switcher -->
+                    <button id="themeSwitcher" class="p-2 rounded-full hover-bg-surface transition-colors duration-300">
+                        <svg id="sunIcon" class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moonIcon" class="w-6 h-6 text-accent hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Hamburger Menu -->
+                    <div id="hamburgerMenu" class="hamburger-menu lg:hidden">
+                        <span class="bg-accent"></span>
+                        <span class="bg-accent"></span>
+                        <span class="bg-accent"></span>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileNav" class="mobile-nav fixed top-0 right-0 h-full w-2/3 bg-dark-bg border-l-2 border-accent shadow-2xl p-6 lg:hidden">
+            <div class="flex flex-col items-start space-y-4 pt-24">
+                <a href="#home" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Home</a>
+                <a href="#clubs" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Clubs</a>
+                <a href="#directory" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Directory</a>
+                <a href="#resources" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Resources</a>
+                <a href="#join" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Join Us</a>
+                <a href="#dashboard" class="text-2xl hover-accent transition-colors duration-300 mobile-nav-link">Moderator</a>
+            </div>
+        </div>
+
+        <!-- Main Content Sections -->
+        <main class="flex-grow p-4 md:p-8 pt-24">
+
+            <!-- Home Page Section -->
+            <section id="home" class="page-section active">
+                <div class="container mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                        <!-- Left Column: Clock & Calendar -->
+                        <div class="col-span-1 lg:col-span-1 bg-surface rounded-3xl shadow-lg p-6">
+                            <div class="text-center mb-6">
+                                <div id="liveClock" class="text-4xl lg:text-5xl font-bold mb-2 text-accent"></div>
+                                <div id="liveDate" class="text-lg text-gray-400"></div>
+                            </div>
+                            <div class="bg-surface rounded-2xl p-4">
+                                <div id="calendarHeader" class="flex justify-between items-center mb-4 text-xl font-semibold">
+                                    <button id="prevMonth" class="text-accent hover:text-red-accent transition-colors duration-300">&lt;</button>
+                                    <span id="monthYear"></span>
+                                    <button id="nextMonth" class="text-accent hover:text-red-accent transition-colors duration-300">&gt;</button>
+                                </div>
+                                <div id="calendarDays" class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-400">
+                                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                                </div>
+                                <div id="calendarGrid" class="grid grid-cols-7 gap-2 text-center"></div>
+                            </div>
+                            <div id="eventDetails" class="mt-4 p-4 rounded-xl bg-gray-800 text-sm hidden">
+                                <h4 class="font-bold text-accent">Events for <span id="eventDate"></span></h4>
+                                <p class="mt-2 text-gray-300">No events for this date.</p>
+                            </div>
+                        </div>
+
+                        <!-- Center Column: Welcome & Notices -->
+                        <div class="col-span-1 lg:col-span-2 bg-surface rounded-3xl shadow-lg p-8">
+                            <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 text-accent leading-tight">Welcome to the CCE Club Hub</h1>
+                            <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                                The central hub for all things Computer Communication Engineering. This website is your one-stop resource for academic materials, club activities, and community events.
+                            </p>
+                            <div class="border-t-2 border-b-2 border-accent py-4 mb-8">
+                                <h3 class="text-2xl font-bold mb-4 text-accent">Important Notices</h3>
+                                <div id="noticeContainer" class="space-y-4">
+                                    <!-- Notices will be dynamically added here -->
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-gray-800 rounded-2xl p-6">
+                                    <h4 class="text-xl font-semibold text-accent mb-2">Connect with Us</h4>
+                                    <p class="text-gray-400 mb-4">Find us on social media and join our groups.</p>
+                                    <div class="flex space-x-4">
+                                        <a href="#" class="text-accent hover:text-red-accent transition-colors duration-300">
+                                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.873V15.19h-2.91v-3.235h2.91v-2.18c0-2.887 1.77-4.475 4.335-4.475 1.258 0 2.348.225 2.665.324v2.96h-1.745c-1.378 0-1.644.656-1.644 1.615v2.135h3.243l-.53 3.235h-2.713v6.71c4.781-.745 8.438-4.882 8.438-9.873C22 6.477 17.523 2 12 2z"></path></svg>
+                                        </a>
+                                        <a href="#" class="text-accent hover:text-red-accent transition-colors duration-300">
+                                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.791 2.213c.895 0 1.621.726 1.621 1.621s-.726 1.621-1.621 1.621-1.621-.726-1.621-1.621.726-1.621 1.621-1.621zm-5.068-.135a5.578 5.578 0 00-5.578 5.578v4.98c0 .248-.046.488-.132.72L5.86 16.59c-.085.234-.132.474-.132.72v.111h11.97a1 0 011-1V8.586a5.578 5.578 0 00-5.578-5.578zM12 10a2 2 0 110-4 2 2 0 010 4zm2.5 1.5a.5.5 0 01-.5.5h-4a.5.5 0 010-1h4a.5.5 0 01.5.5z"></path></svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-800 rounded-2xl p-6">
+                                    <h4 class="text-xl font-semibold text-accent mb-2">Our Mission</h4>
+                                    <p class="text-gray-400">
+                                        To foster a vibrant community, promote academic excellence, and build a network of future leaders in Computer Communication Engineering.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clubs Section -->
+            <section id="clubs" class="page-section hidden">
+                <div class="container mx-auto">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-accent">Our Clubs & Committees</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('Competitive Programming')">
+                            <h3 class="text-2xl font-semibold text-accent">Competitive Programming</h3>
+                            <p class="text-gray-400 mt-2">Sharpen your algorithmic skills and climb the leaderboards.</p>
+                        </div>
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('Graphic')">
+                            <h3 class="text-2xl font-semibold text-accent">Graphic Club</h3>
+                            <p class="text-gray-400 mt-2">Unleash your creativity and design visually stunning projects.</p>
+                        </div>
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('Sports')">
+                            <h3 class="text-2xl font-semibold text-accent">Sports Committee</h3>
+                            <p class="text-gray-400 mt-2">Stay active, compete, and build team spirit.</p>
+                        </div>
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('PR Office')">
+                            <h3 class="text-2xl font-semibold text-accent">Office PR</h3>
+                            <p class="text-gray-400 mt-2">Connect with the community and represent the CCE Club.</p>
+                        </div>
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('Cyber Security')">
+                            <h3 class="text-2xl font-semibold text-accent">Cyber Security</h3>
+                            <p class="text-gray-400 mt-2">Learn to secure systems and protect data.</p>
+                        </div>
+                        <div class="bg-surface rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showClubPage('Event')">
+                            <h3 class="text-2xl font-semibold text-accent">Event Club</h3>
+                            <p class="text-gray-400 mt-2">Plan and execute memorable club events.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Club Page Template -->
+            <section id="clubPage" class="page-section hidden">
+                <div class="container mx-auto">
+                    <button class="mb-6 p-2 rounded-full bg-surface hover-bg-surface transition-colors duration-300" onclick="showPage('clubs')">
+                        <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
+                    <h2 id="clubPageTitle" class="text-4xl lg:text-5xl font-bold mb-6 text-accent"></h2>
+                    <div id="clubPageContent" class="bg-surface rounded-3xl shadow-lg p-8">
+                        <!-- Content will be injected here via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Directory Section -->
+            <section id="directory" class="page-section hidden">
+                <div class="container mx-auto">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-accent">Faculty Directory</h2>
+                    <input type="text" id="facultySearch" placeholder="Search by name or designation..." class="w-full mb-6 bg-surface text-accent rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-red-accent transition-colors duration-300">
+                    <div id="facultyContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Faculty cards will be dynamically added here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources" class="page-section hidden">
+                <div class="container mx-auto">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-accent">Study Resources</h2>
+                    
+                    <!-- Semester-wise materials -->
+                    <div id="semesterContainer" class="space-y-6">
+                        <!-- Content will be injected here -->
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <!-- Routine Section -->
+                        <div class="bg-surface rounded-2xl shadow-lg p-6">
+                            <h3 class="text-2xl font-semibold text-accent mb-4">Class & Exam Routine</h3>
+                            <p class="text-gray-400 mb-4">
+                                Access the latest routines for your classes and exams.
+                            </p>
+                            <a href="https://drive.google.com/drive/folders/mock-routine-link" target="_blank" class="block w-full text-center py-3 px-6 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700 transition-colors duration-300">
+                                View Routine
+                            </a>
+                        </div>
+                        
+                        <!-- Thesis/Research Papers -->
+                        <div class="bg-surface rounded-2xl shadow-lg p-6">
+                            <h3 class="text-2xl font-semibold text-accent mb-4">Thesis & Papers</h3>
+                            <p class="text-gray-400 mb-4">
+                                Browse a collection of thesis and research papers from CCE students.
+                            </p>
+                            <a href="https://drive.google.com/drive/folders/mock-thesis-link" target="_blank" class="block w-full text-center py-3 px-6 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700 transition-colors duration-300">
+                                Browse Papers
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Join Us Section -->
+            <section id="join" class="page-section hidden">
+                <div class="container mx-auto max-w-2xl">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-accent text-center">Join the CCE Club</h2>
+                    <div class="bg-surface rounded-3xl shadow-lg p-8">
+                        <form id="membershipForm" class="space-y-6">
+                            <div>
+                                <label for="fullName" class="block text-gray-300">Full Name</label>
+                                <input type="text" id="fullName" class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent" required>
+                            </div>
+                            <div>
+                                <label for="studentID" class="block text-gray-300">Student ID</label>
+                                <input type="text" id="studentID" class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent" required>
+                            </div>
+                            <div>
+                                <label for="semester" class="block text-gray-300">Semester</label>
+                                <input type="number" id="semester" class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent" min="1" max="8" required>
+                            </div>
+                            <div>
+                                <label for="contactInfo" class="block text-gray-300">Contact Info (Phone/Email)</label>
+                                <input type="text" id="contactInfo" class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2">Preferred Clubs/Committees</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="Cyber Security" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Cyber Security</span>
+                                    </label>
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="Competitive Programming" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Competitive Programming</span>
+                                    </label>
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="Sports" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Sports</span>
+                                    </label>
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="Graphic" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Graphic</span>
+                                    </label>
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="PR Office" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">PR Office</span>
+                                    </label>
+                                    <label class="flex items-center text-gray-400">
+                                        <input type="checkbox" name="preferredClubs" value="Event" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Event</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="statement" class="block text-gray-300">Statement of Interest</label>
+                                <textarea id="statement" rows="4" class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent"></textarea>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="consent" class="rounded text-red-accent focus:ring-red-accent" required>
+                                <label for="consent" class="ml-2 text-gray-400 text-sm">I consent to storing my data for club-related communication.</label>
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700 transition-colors duration-300">
+                                Submit Application
+                            </button>
+                            <div id="formMessage" class="mt-4 text-center hidden"></div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Moderator Dashboard Section -->
+            <section id="dashboard" class="page-section hidden">
+                <div class="container mx-auto max-w-2xl">
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-accent text-center">Moderator Dashboard</h2>
+                    <div id="loginForm" class="bg-surface rounded-3xl shadow-lg p-8 text-center">
+                        <p class="text-lg text-gray-400 mb-6">Please log in to access the dashboard.</p>
+                        <input type="text" id="modUsername" placeholder="Username" class="w-full mb-4 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent">
+                        <input type="password" id="modPassword" placeholder="Password" class="w-full mb-6 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-red-accent">
+                        <button id="loginBtn" class="w-full py-3 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700 transition-colors duration-300">
+                            Log In
+                        </button>
+                    </div>
+                    <div id="dashboardContent" class="hidden">
+                        <div class="bg-surface rounded-3xl shadow-lg p-8">
+                            <h3 class="text-3xl font-bold text-accent mb-6">Welcome, Moderator!</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-800 rounded-2xl p-6">
+                                    <h4 class="text-2xl font-semibold text-accent mb-4">Manage Notices</h4>
+                                    <input type="text" id="noticeTitleInput" placeholder="Notice Title" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 text-white mb-2">
+                                    <textarea id="noticeContentInput" placeholder="Notice Content" rows="3" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 text-white mb-2"></textarea>
+                                    <label class="flex items-center text-gray-400 mb-4">
+                                        <input type="checkbox" id="noticeImportantCheckbox" class="rounded text-red-accent focus:ring-red-accent">
+                                        <span class="ml-2">Important</span>
+                                    </label>
+                                    <button id="addNoticeBtn" class="w-full py-2 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700">Add Notice</button>
+                                </div>
+                                <div class="bg-gray-800 rounded-2xl p-6">
+                                    <h4 class="text-2xl font-semibold text-accent mb-4">Manage Faculty</h4>
+                                    <input type="text" id="facultyNameInput" placeholder="Name" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 text-white mb-2">
+                                    <input type="text" id="facultyDesignationInput" placeholder="Designation" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 text-white mb-2">
+                                    <button id="addFacultyBtn" class="w-full py-2 rounded-xl bg-red-accent text-white font-semibold hover:bg-red-700">Add Faculty</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-surface p-8 text-center mt-auto">
+            <div class="container mx-auto">
+                <p class="text-gray-400">&copy; 2025 CCE Club. All rights reserved.</p>
+                <div class="flex justify-center space-x-4 mt-4 text-sm text-gray-500">
+                    <a href="#" class="hover-accent transition-colors duration-300">Privacy Policy</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="#" class="hover-accent transition-colors duration-300">Terms of Service</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="#" class="hover-accent transition-colors duration-300">Contact Us</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // --- Navigation Logic ---
+        const pages = document.querySelectorAll('.page-section');
+        const showPage = (id) => {
+            pages.forEach(page => page.classList.add('hidden'));
+            const pageToShow = document.getElementById(id);
+            if (pageToShow) {
+                pageToShow.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.classList.contains('open')) {
+                mobileNav.classList.remove('open');
+            }
+        };
+
+        // --- Club Page Logic ---
+        const clubPageTitle = document.getElementById('clubPageTitle');
+        const clubPageContent = document.getElementById('clubPageContent');
+
+        const clubContent = {
+            'Competitive Programming': `
+                <p class="text-gray-300 mb-6">
+                    This club is for students passionate about problem-solving and algorithms. We train for coding contests and host internal challenges.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-xl p-6">
+                        <h4 class="text-xl font-semibold text-accent mb-4">Current Challenges</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-400">
+                            <li>Array Manipulation (Difficulty: Easy)</li>
+                            <li>Dynamic Programming Challenge (Difficulty: Hard)</li>
+                            <li>Graph Traversal (Difficulty: Medium)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-6">
+                        <h4 class="text-xl font-semibold text-accent mb-4">Leaderboard</h4>
+                        <ol class="list-decimal list-inside text-gray-400">
+                            <li>Jane Doe - 500 points</li>
+                            <li>John Smith - 480 points</li>
+                            <li>Emily White - 450 points</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-accent mb-4">Resources</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">Codeforces</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">LeetCode</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">HackerRank</a>
+                    </div>
+                </div>
+            `,
+            'Graphic': `
+                <p class="text-gray-300 mb-6">
+                    A place for designers and visual artists. We share tutorials, critique each other's work, and collaborate on club projects.
+                </p>
+                <h4 class="text-xl font-semibold text-accent mb-4">Member Portfolio</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="rounded-xl overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/400x300/262626/e0e0e0?text=Design+1" alt="Design Portfolio 1" class="w-full h-auto">
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/400x300/262626/e0e0e0?text=Design+2" alt="Design Portfolio 2" class="w-full h-auto">
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-lg">
+                        <img src="https://placehold.co/400x300/262626/e0e0e0?text=Design+3" alt="Design Portfolio 3" class="w-full h-auto">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-accent mb-4">Design Resources</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">Figma</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">Adobe Suite</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">Canva</a>
+                    </div>
+                </div>
+            `,
+            'Sports': `
+                <p class="text-gray-300 mb-6">
+                    The Sports Committee organizes all inter- and intra-departmental sports events. We believe in a healthy body for a healthy mind.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-xl p-6">
+                        <h4 class="text-xl font-semibold text-accent mb-4">Upcoming Events</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-400">
+                            <li><span class="font-semibold text-white">Football Tournament</span>: June 5th, University Field</li>
+                            <li><span class="font-semibold text-white">Chess Competition</span>: June 10th, Club Room</li>
+                            <li><span class="font-semibold text-white">Table Tennis Match</span>: June 15th, Indoor Court</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-6">
+                        <h4 class="text-xl font-semibold text-accent mb-4">Gallery</h4>
+                        <div class="flex space-x-2">
+                            <img src="https://placehold.co/150x150/262626/e0e0e0?text=Sports+1" alt="Sports Photo 1" class="rounded-lg">
+                            <img src="https://placehold.co/150x150/262626/e0e0e0?text=Sports+2" alt="Sports Photo 2" class="rounded-lg">
+                            <img src="https://placehold.co/150x150/262626/e0e0e0?text=Sports+3" alt="Sports Photo 3" class="rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            `,
+            'PR Office': `
+                <p class="text-gray-300 mb-6">
+                    We are the public face of the CCE Club. We manage social media, connect with external partners, and document all club activities.
+                </p>
+                <h4 class="text-xl font-semibold text-accent mb-4">Social Media Hub</h4>
+                <div class="space-y-4">
+                    <div class="bg-gray-800 rounded-xl p-4">
+                        <h5 class="font-semibold text-accent mb-2">Facebook Feed</h5>
+                        <p class="text-sm text-gray-400">
+                            <a href="#" class="text-red-400 hover:underline">Link to Facebook Page</a>
+                            <br>
+                            (A live embed would go here)
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4">
+                        <h5 class="font-semibold text-accent mb-2">Instagram Feed</h5>
+                        <p class="text-sm text-gray-400">
+                            <a href="#" class="text-red-400 hover:underline">Link to Instagram Profile</a>
+                            <br>
+                            (A live embed would go here)
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4">
+                        <h5 class="font-semibold text-accent mb-2">Contact Information</h5>
+                        <p class="text-sm text-gray-400">
+                            Email: <a href="mailto:pr.cce@email.com" class="text-red-400 hover:underline">pr.cce@email.com</a><br>
+                            Phone: +880 1234 567890
+                        </p>
+                    </div>
+                </div>
+            `,
+            'Cyber Security': `
+                <p class="text-gray-300 mb-6">
+                    The Cyber Security Committee is a hub for students interested in network security, ethical hacking, and digital forensics. We organize workshops and capture-the-flag (CTF) events to hone our skills.
+                </p>
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h4 class="text-xl font-semibold text-accent mb-4">Current Topics</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-400">
+                        <li>Web Application Penetration Testing</li>
+                        <li>Threat Hunting and Incident Response</li>
+                        <li>Cryptography Fundamentals</li>
+                    </ul>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-accent mb-4">Resources</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">TryHackMe</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">Hack The Box</a>
+                        <a href="#" class="bg-red-700 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-colors">OWASP</a>
+                    </div>
+                </div>
+            `,
+            'Event': `
+                <p class="text-gray-300 mb-6">
+                    The Event Club is responsible for organizing all major club events, from freshers' welcome parties to annual tech fests. We ensure every event is a success and a great experience for all students.
+                </p>
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h4 class="text-xl font-semibold text-accent mb-4">Past Events Gallery</h4>
+                    <p class="text-gray-400">
+                        A showcase of our most memorable events.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 mt-4">
+                         <img src="https://placehold.co/150x150/262626/e0e0e0?text=Event+1" alt="Event Photo 1" class="rounded-lg">
+                         <img src="https://placehold.co/150x150/262626/e0e0e0?text=Event+2" alt="Event Photo 2" class="rounded-lg">
+                         <img src="https://placehold.co/150x150/262626/e0e0e0?text=Event+3" alt="Event Photo 3" class="rounded-lg">
+                    </div>
+                </div>
+            `,
+        };
+
+        const showClubPage = (clubName) => {
+            clubPageTitle.textContent = clubName;
+            clubPageContent.innerHTML = clubContent[clubName] || `
+                <p class="text-gray-400">Content for the ${clubName} club is coming soon!</p>
+            `;
+            showPage('clubPage');
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Theme Switcher Logic ---
+            const themeSwitcher = document.getElementById('themeSwitcher');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            const body = document.body;
+
+            const savedTheme = localStorage.getItem('theme') || 'dark-theme';
+            body.className = savedTheme;
+            if (savedTheme === 'red-theme') {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+
+            themeSwitcher.addEventListener('click', () => {
+                if (body.classList.contains('dark-theme')) {
+                    body.classList.remove('dark-theme');
+                    body.classList.add('red-theme');
+                    localStorage.setItem('theme', 'red-theme');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    body.classList.remove('red-theme');
+                    body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark-theme');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            });
+
+            // --- Navigation Logic ---
+            const navLinks = document.querySelectorAll('nav a, .mobile-nav-link');
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const pageId = link.getAttribute('href').substring(1);
+                    if (pageId) {
+                        e.preventDefault();
+                        showPage(pageId);
+                    }
+                });
+            });
+
+            hamburgerMenu.addEventListener('click', () => {
+                mobileNav.classList.toggle('open');
+            });
+
+            // --- Home Page Features ---
+            // Digital Clock
+            const updateClock = () => {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const dateString = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('liveClock').textContent = timeString;
+                document.getElementById('liveDate').textContent = dateString;
+            };
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Calendar
+            const calendarGrid = document.getElementById('calendarGrid');
+            const monthYearSpan = document.getElementById('monthYear');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const nextMonthBtn = document.getElementById('nextMonth');
+            const eventDetails = document.getElementById('eventDetails');
+            const eventDateSpan = document.getElementById('eventDate');
+
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+
+            const renderCalendar = (month, year) => {
+                calendarGrid.innerHTML = '';
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                monthYearSpan.textContent = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDiv = document.createElement('div');
+                    calendarGrid.appendChild(emptyDiv);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.textContent = day;
+                    dayDiv.classList.add('p-2', 'rounded-lg', 'cursor-pointer', 'hover:bg-red-accent', 'hover:text-white', 'transition-colors', 'duration-200');
+                    if (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                        dayDiv.classList.add('bg-red-accent', 'text-white');
+                    }
+                    dayDiv.addEventListener('click', () => {
+                        eventDetails.classList.remove('hidden');
+                        eventDateSpan.textContent = `${new Date(year, month, day).toLocaleDateString()}`;
+                    });
+                    calendarGrid.appendChild(dayDiv);
+                }
+            };
+
+            prevMonthBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar(currentMonth, currentYear);
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar(currentMonth, currentYear);
+            });
+            renderCalendar(currentMonth, currentYear);
+
+            // Notices
+            const notices = [
+                { title: "Club Meeting Tomorrow", content: "All committee members must attend the general meeting at 3 PM in the CCE Lab.", date: "2025-09-20", important: true },
+                { title: "New Resource Links", content: "New study materials for 5th semester have been uploaded to the resources section.", date: "2025-09-18", important: false },
+                { title: "Hackathon Registration Open", content: "Sign up for the annual CCE Hackathon by June 1st. Great prizes await!", date: "2025-09-15", important: true },
+            ];
+
+            const noticeContainer = document.getElementById('noticeContainer');
+            const renderNotices = () => {
+                noticeContainer.innerHTML = '';
+                notices.forEach(notice => {
+                    const noticeDiv = document.createElement('div');
+                    noticeDiv.classList.add('bg-gray-800', 'p-4', 'rounded-xl', 'shadow-md');
+                    let importantTag = notice.important ? `<span class="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full absolute top-2 right-2">IMPORTANT</span>` : '';
+                    noticeDiv.innerHTML = `
+                        <div class="relative">
+                            <h4 class="text-lg font-bold text-accent">${notice.title}</h4>
+                            ${importantTag}
+                        </div>
+                        <p class="text-gray-300 text-sm mt-2">${notice.content}</p>
+                        <span class="text-gray-500 text-xs mt-2 block">${notice.date}</span>
+                    `;
+                    noticeContainer.appendChild(noticeDiv);
+                });
+            };
+            renderNotices();
+
+            // --- Directory & Resources Logic ---
+            const facultyData = [
+                { name: "Dr. Ahmed Khan", designation: "Professor", research: "Wireless Communication", contact: "ahmed.khan@cce.edu", photo: "https://placehold.co/150x150/262626/e0e0e0?text=AK" },
+                { name: "Ms. Nazia Islam", designation: "Assistant Professor", research: "Network Security", contact: "nazia.islam@cce.edu", photo: "https://placehold.co/150x150/262626/e0e0e0?text=NI" },
+                { name: "Mr. Omar Faruq", designation: "Lecturer", research: "Data Science", contact: "omar.faruq@cce.edu", photo: "https://placehold.co/150x150/262626/e0e0e0?text=OF" }
+            ];
+            const facultyContainer = document.getElementById('facultyContainer');
+            const facultySearchInput = document.getElementById('facultySearch');
+
+            const renderFaculty = (data) => {
+                facultyContainer.innerHTML = '';
+                data.forEach(faculty => {
+                    const card = document.createElement('div');
+                    card.classList.add('bg-surface', 'rounded-2xl', 'shadow-lg', 'p-6', 'flex', 'flex-col', 'items-center', 'text-center');
+                    card.innerHTML = `
+                        <img src="${faculty.photo}" alt="${faculty.name}" class="rounded-full w-24 h-24 mb-4 border-2 border-red-accent">
+                        <h4 class="text-xl font-semibold text-accent mb-1">${faculty.name}</h4>
+                        <p class="text-gray-400 mb-2">${faculty.designation}</p>
+                        <p class="text-sm text-gray-500">Research: ${faculty.research}</p>
+                        <a href="mailto:${faculty.contact}" class="mt-4 text-red-accent hover:underline">Contact</a>
+                    `;
+                    facultyContainer.appendChild(card);
+                });
+            };
+            renderFaculty(facultyData);
+
+            facultySearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const filteredData = facultyData.filter(f => 
+                    f.name.toLowerCase().includes(query) || 
+                    f.designation.toLowerCase().includes(query) ||
+                    f.research.toLowerCase().includes(query)
+                );
+                renderFaculty(filteredData);
+            });
+            
+            // Study Materials
+            const studyMaterials = {
+                1: {
+                    books: "https://drive.google.com/drive/folders/mock-sem1-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem1-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem1-pyq"
+                },
+                2: {
+                    books: "https://drive.google.com/drive/folders/mock-sem2-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem2-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem2-pyq"
+                },
+                3: {
+                    books: "https://drive.google.com/drive/folders/mock-sem3-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem3-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem3-pyq"
+                },
+                4: {
+                    books: "https://drive.google.com/drive/folders/mock-sem4-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem4-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem4-pyq"
+                },
+                5: {
+                    books: "https://drive.google.com/drive/folders/mock-sem5-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem5-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem5-pyq"
+                },
+                6: {
+                    books: "https://drive.google.com/drive/folders/mock-sem6-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem6-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem6-pyq"
+                },
+                7: {
+                    books: "https://drive.google.com/drive/folders/mock-sem7-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem7-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem7-pyq"
+                },
+                8: {
+                    books: "https://drive.google.com/drive/folders/mock-sem8-books",
+                    syllabus: "https://drive.google.com/drive/folders/mock-sem8-syllabus",
+                    pyq: "https://drive.google.com/drive/folders/mock-sem8-pyq"
+                }
+            };
+            const semesterContainer = document.getElementById('semesterContainer');
+
+            for (let i = 1; i <= 8; i++) {
+                const links = studyMaterials[i];
+                const semesterDiv = document.createElement('div');
+                semesterDiv.classList.add('bg-surface', 'rounded-2xl', 'shadow-lg', 'p-6');
+                semesterDiv.innerHTML = `
+                    <h3 class="text-2xl font-semibold text-accent mb-4">Semester ${i}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <a href="${links.books}" target="_blank" class="block text-center py-3 px-6 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 transition-colors duration-300">
+                            Books & Slides
+                        </a>
+                        <a href="${links.syllabus}" target="_blank" class="block text-center py-3 px-6 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 transition-colors duration-300">
+                            Syllabus
+                        </a>
+                        <a href="${links.pyq}" target="_blank" class="block text-center py-3 px-6 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 transition-colors duration-300">
+                            Previous Questions
+                        </a>
+                    </div>
+                `;
+                semesterContainer.appendChild(semesterDiv);
+            }
+
+            // --- Membership Form Logic ---
+            const membershipForm = document.getElementById('membershipForm');
+            const formMessage = document.getElementById('formMessage');
+
+            membershipForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formMessage.textContent = 'Thank you for your application! We will review it shortly.';
+                formMessage.classList.remove('hidden');
+                formMessage.classList.add('text-green-500');
+                membershipForm.reset();
+            });
+
+            // --- Moderator Dashboard Logic ---
+            const loginForm = document.getElementById('loginForm');
+            const dashboardContent = document.getElementById('dashboardContent');
+            const loginBtn = document.getElementById('loginBtn');
+            const modUsernameInput = document.getElementById('modUsername');
+            const modPasswordInput = document.getElementById('modPassword');
+            const addNoticeBtn = document.getElementById('addNoticeBtn');
+            const addFacultyBtn = document.getElementById('addFacultyBtn');
+
+            const isModerator = localStorage.getItem('isModerator') === 'true';
+            if (isModerator) {
+                loginForm.classList.add('hidden');
+                dashboardContent.classList.remove('hidden');
+            }
+
+            loginBtn.addEventListener('click', () => {
+                const username = modUsernameInput.value;
+                const password = modPasswordInput.value;
+                if (username === 'mod' && password === 'pass') {
+                    localStorage.setItem('isModerator', 'true');
+                    loginForm.classList.add('hidden');
+                    dashboardContent.classList.remove('hidden');
+                } else {
+                    alert('Invalid username or password.'); // Using alert here for simplicity in a mock-up
+                }
+            });
+
+            addNoticeBtn.addEventListener('click', () => {
+                const title = document.getElementById('noticeTitleInput').value;
+                const content = document.getElementById('noticeContentInput').value;
+                const important = document.getElementById('noticeImportantCheckbox').checked;
+                if (title && content) {
+                    const newNotice = {
+                        title: title,
+                        content: content,
+                        date: new Date().toISOString().slice(0, 10),
+                        important: important
+                    };
+                    notices.unshift(newNotice); // Add to the beginning
+                    renderNotices();
+                    document.getElementById('noticeTitleInput').value = '';
+                    document.getElementById('noticeContentInput').value = '';
+                    document.getElementById('noticeImportantCheckbox').checked = false;
+                    alert('Notice added successfully!');
+                } else {
+                    alert('Please fill in all notice fields.');
+                }
+            });
+            
+            addFacultyBtn.addEventListener('click', () => {
+                const name = document.getElementById('facultyNameInput').value;
+                const designation = document.getElementById('facultyDesignationInput').value;
+                if (name && designation) {
+                    const newFaculty = {
+                        name: name,
+                        designation: designation,
+                        research: "Not specified",
+                        contact: "Not specified",
+                        photo: "https://placehold.co/150x150/262626/e0e0e0?text=NEW"
+                    };
+                    facultyData.push(newFaculty);
+                    renderFaculty(facultyData);
+                    document.getElementById('facultyNameInput').value = '';
+                    document.getElementById('facultyDesignationInput').value = '';
+                    alert('Faculty member added successfully!');
+                } else {
+                    alert('Please fill in all faculty fields.');
+                }
+            });
+            
+            // Search Functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                // This is a simple, client-side search across all visible sections.
+                // A real implementation would require a backend index.
+                const sections = document.querySelectorAll('.page-section');
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            });
+            
+        });
+    </script>
+
+</body>
+</html>
